@@ -1,0 +1,277 @@
+[
+  {
+    "id": 1,
+    "title": "Bánh mặn",
+    "source": "data/detail/banhman.json",
+    "recipes": 734,
+    "images": [
+      "file:///android_asset/data/images/banhmanone.jpg",
+      "file:///android_asset/data/images/banhmantwo.jpg",
+      "file:///android_asset/data/images/banhmanthree.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Bánh ngọt",
+    "source": "data/detail/banhngot.json",
+    "recipes": 2232,
+    "images": [
+      "file:///android_asset/data/images/banhngotone.jpg",
+      "file:///android_asset/data/images/banhngottwo.jpg",
+      "file:///android_asset/data/images/banhngotthree.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Bún - Mì - Phở",
+    "source": "data/detail/bunmipho.json",
+    "recipes": 338,
+    "images": [
+      "file:///android_asset/data/images/bunmiphoone.jpg",
+      "file:///android_asset/data/images/bunmiphotwo.jpg",
+      "file:///android_asset/data/images/bunmiphothree.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Canh",
+    "source": "data/detail/canh.json",
+    "recipes": 839,
+    "images": [
+      "file:///android_asset/data/images/canhone.jpg",
+      "file:///android_asset/data/images/canhtwo.jpg",
+      "file:///android_asset/data/images/canhthree.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Chay",
+    "source": "data/detail/chay.json",
+    "recipes": 424,
+    "images": [
+      "file:///android_asset/data/images/chayone.jpg",
+      "file:///android_asset/data/images/chaytwo.jpg",
+      "file:///android_asset/data/images/chaythree.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Chè",
+    "source": "data/detail/che.json",
+    "recipes": 589,
+    "images": [
+      "file:///android_asset/data/images/cheone.jpg",
+      "file:///android_asset/data/images/chetwo.jpg",
+      "file:///android_asset/data/images/chethree.jpg"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Cocktail",
+    "source": "data/detail/cocktail.json",
+    "recipes": 128,
+    "images": [
+      "file:///android_asset/data/images/cocktailone.jpg",
+      "file:///android_asset/data/images/cocktailtwo.jpg",
+      "file:///android_asset/data/images/cocktailthree.jpg"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Cupcake",
+    "source": "data/detail/cupcake.json",
+    "recipes": 111,
+    "images": [
+      "file:///android_asset/data/images/cupcakeone.jpg",
+      "file:///android_asset/data/images/cupcaketwo.jpg",
+      "file:///android_asset/data/images/cupcakethree.jpg"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Đồ uống",
+    "source": "data/detail/douong.json",
+    "recipes": 385,
+    "images": [
+      "file:///android_asset/data/images/douongone.jpg",
+      "file:///android_asset/data/images/douongtwo.jpg",
+      "file:///android_asset/data/images/douongthree.jpg"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Đồ sống",
+    "source": "data/detail/dosong.json",
+    "recipes": 37,
+    "images": [
+      "file:///android_asset/data/images/dosongone.jpg",
+      "file:///android_asset/data/images/dosongtwo.jpg",
+      "file:///android_asset/data/images/dosongthree.jpg"
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Kem",
+    "source": "data/detail/kem.json",
+    "recipes": 499,
+    "images": [
+      "file:///android_asset/data/images/kemone.jpg",
+      "file:///android_asset/data/images/kemtwo.jpg",
+      "file:///android_asset/data/images/kemthree.jpg"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Lẩu",
+    "source": "data/detail/lau.json",
+    "recipes": 124,
+    "images": [
+      "file:///android_asset/data/images/lauone.jpg",
+      "file:///android_asset/data/images/lautwo.jpg",
+      "file:///android_asset/data/images/lauthree.jpg"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Miến - Hủ tiếu",
+    "source": "data/detail/hutieu.json",
+    "recipes": 111,
+    "images": [
+      "file:///android_asset/data/images/hutieuone.jpg",
+      "file:///android_asset/data/images/hutieutwo.jpg",
+      "file:///android_asset/data/images/hutieuthree.jpg"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Mứt",
+    "source": "data/detail/mut.json",
+    "recipes": 466,
+    "images": [
+      "file:///android_asset/data/images/mutone.jpg",
+      "file:///android_asset/data/images/muttwo.jpg",
+      "file:///android_asset/data/images/mutthree.jpg"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Nem - chả",
+    "source": "data/detail/nemcha.json",
+    "recipes": 443,
+    "images": [
+      "file:///android_asset/data/images/nemchaone.jpg",
+      "file:///android_asset/data/images/nemchatwo.jpg",
+      "file:///android_asset/data/images/nemchathree.jpg"
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Nôm gỏi",
+    "source": "data/detail/nomgoi.json",
+    "recipes": 436,
+    "images": [
+      "file:///android_asset/data/images/nomgoione.jpg",
+      "file:///android_asset/data/images/nomgoitwo.jpg",
+      "file:///android_asset/data/images/nomgoithree.jpg"
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Nước chấm",
+    "source": "data/detail/nuoccham.json",
+    "recipes": 177,
+    "images": [
+      "file:///android_asset/data/images/nuocchamone.jpg",
+      "file:///android_asset/data/images/nuocchamtwo.jpg",
+      "file:///android_asset/data/images/nuocchamthree.jpg"
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Nước ép",
+    "source": "data/detail/nuocep.json",
+    "recipes": 141,
+    "images": [
+      "file:///android_asset/data/images/nuocepone.jpg",
+      "file:///android_asset/data/images/nuoceptwo.jpg",
+      "file:///android_asset/data/images/nuocepthree.jpg"
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Nướng",
+    "source": "data/detail/nuong.json",
+    "recipes": 9,
+    "images": [
+      "file:///android_asset/data/images/nuongone.jpg",
+      "file:///android_asset/data/images/nuongtwo.jpg",
+      "file:///android_asset/data/images/nuongthree.jpg"
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Pasta spaghetti",
+    "source": "data/detail/spaghetti.json",
+    "recipes": 174,
+    "images": [
+      "file:///android_asset/data/images/spaghettione.jpg",
+      "file:///android_asset/data/images/spaghettitwo.jpg",
+      "file:///android_asset/data/images/spaghettithree.jpg"
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Salad",
+    "source": "data/detail/salad.json",
+    "recipes": 421,
+    "images": [
+      "file:///android_asset/data/images/saladone.jpg",
+      "file:///android_asset/data/images/saladtwo.jpg",
+      "file:///android_asset/data/images/saladthree.jpg"
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Sinh tố",
+    "source": "data/detail/sinhto.json",
+    "recipes": 349,
+    "images": [
+      "file:///android_asset/data/images/sinhtoone.jpg",
+      "file:///android_asset/data/images/sinhtotwo.jpg",
+      "file:///android_asset/data/images/sinhtothree.jpg"
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Snack",
+    "source": "data/detail/snack.json",
+    "recipes": 177,
+    "images": [
+      "file:///android_asset/data/images/snackone.jpg",
+      "file:///android_asset/data/images/snacktwo.jpg",
+      "file:///android_asset/data/images/snackthree.jpg"
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Soup cháo",
+    "source": "data/detail/soupchao.json",
+    "recipes": 401,
+    "images": [
+      "file:///android_asset/data/images/soupone.jpg",
+      "file:///android_asset/data/images/souptwo.jpg",
+      "file:///android_asset/data/images/soupthree.jpg"
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Xôi",
+    "source": "data/detail/xoi.json",
+    "recipes": 300,
+    "images": [
+      "file:///android_asset/data/images/xoione.jpg",
+      "file:///android_asset/data/images/xoitwo.jpg",
+      "file:///android_asset/data/images/xoithree.jpg"
+    ]
+  }
+]
