@@ -1,5 +1,5 @@
-import 'package:cooking_flutter/data/model/Ingredient.dart';
-import 'package:cooking_flutter/data/model/Step.dart';
+import 'package:cooking_flutter/data/model/ingredient.dart';
+import 'package:cooking_flutter/data/model/step.dart';
 
 class Recipe {
   String name;
