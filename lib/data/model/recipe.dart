@@ -1,41 +1,48 @@
-import 'package:cooking_flutter/data/model/ingredient.dart';
-import 'package:cooking_flutter/data/model/step.dart';
+import 'package:cooking_flutter/data/model/component.dart';
+import 'package:cooking_flutter/data/model/cook_step.dart';
 
 class Recipe {
+  String id;
   String name;
   int time;
-  String img;
   String level;
-  String des;
   int serving;
-  List<Ingredient> ingredients;
-  List<Step> steps;
+  String img;
+  int totalComponent;
+  int totalStep;
+  List<Component> components;
+  List<CookStep> cookSteps;
 
   Recipe.fromJsonMap(Map<String, dynamic> map)
-      : name = map["name"],
+      : id = map["id"],
+        name = map["name"],
         time = map["time"],
-        img = map["img"],
         level = map["level"],
-        des = map["des"],
         serving = map["serving"],
-        ingredients = List<Ingredient>.from(
-            map["components"].map((it) => Ingredient.fromJsonMap(it))),
-        steps = List<Step>.from(
-            map["cook_steps"].map((it) => Step.fromJsonMap(it)));
+        img = map["img"],
+        totalComponent = map["total_components"],
+        totalStep = map["total_steps"],
+        components = List<Component>.from(
+            map["components"].map((it) => Component.fromJsonMap(it))),
+        cookSteps = List<CookStep>.from(
+            map["cook_steps"].map((it) => CookStep.fromJsonMap(it)));
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = id;
     data['name'] = name;
     data['time'] = time;
-    data['img'] = img;
     data['level'] = level;
-    data['des'] = des;
     data['serving'] = serving;
-    data['components'] = ingredients != null
-        ? this.ingredients.map((v) => v.toJson()).toList()
+    data['img'] = img;
+    data['total_components'] = totalComponent;
+    data['total_steps'] = totalStep;
+    data['components'] = components != null
+        ? this.components.map((v) => v.toJson()).toList()
         : null;
-    data['cook_steps'] =
-        steps != null ? this.steps.map((v) => v.toJson()).toList() : null;
+    data['cook_steps'] = cookSteps != null
+        ? this.cookSteps.map((v) => v.toJson()).toList()
+        : null;
     return data;
   }
 }
