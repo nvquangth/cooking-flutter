@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cooking_flutter/data/constant/constant.dart';
 import 'package:cooking_flutter/data/model/category.dart';
 import 'package:cooking_flutter/data/model/recipe.dart';
-import 'package:cooking_flutter/data/remote/response/category_response.dart';
+import 'package:cooking_flutter/data/remote/response/list_category_response.dart';
 import 'package:http/http.dart' as http;
 
 abstract class RemoteDataSource {

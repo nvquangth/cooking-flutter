@@ -1,23 +1,22 @@
-import 'package:cooking_flutter/data/model/category.dart';
+import 'package:cooking_flutter/data/model/recipe.dart';
 
-class CategoryResponse {
+class CategoryDetailResponse {
   int status;
   String message;
-  List<Category> categories;
+  List<Recipe> recipes;
 
-  CategoryResponse.fromJsonMap(Map<String, dynamic> map)
+  CategoryDetailResponse.fromJsonMap(Map<String, dynamic> map)
       : status = map['status'],
         message = map['message'],
-        categories = List<Category>.from(
-            map['result'].map((it) => Category.fromJsonMap(it)));
+        recipes = List<Recipe>.from(
+            map['result'].map((it) => Recipe.fromJsonMap(it)));
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = status;
     data['message'] = message;
-    data['result'] = categories != null
-        ? this.categories.map((v) => v.toJson()).toList()
-        : null;
+    data['result'] =
+        recipes != null ? this.recipes.map((v) => v.toJson()).toList() : null;
     return data;
   }
 }
