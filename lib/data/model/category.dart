@@ -12,7 +12,8 @@ class Category {
         name = map["name"],
         totalRecipe = map["total_recipes"],
         images = List<String>.from(map["images"]),
-        recipes = List<Recipe>.from(map["recipes"]);
+        recipes =
+            map["recipes"] != null ? List<Recipe>.from(map["recipes"]) : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

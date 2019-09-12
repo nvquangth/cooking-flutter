@@ -1,29 +1,92 @@
+import 'dart:math';
+
+import 'package:cooking_flutter/data/model/category.dart';
+import 'package:cooking_flutter/ui/home/home_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: _Home(),
-    );
-  }
+  State<Home> createState() => _HomeState();
+
 }
 
-class _Home extends StatelessWidget {
+class _HomeState extends State<Home> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    final homeBloc = BlocProvider.of<HomeBloc>(context);
+    homeBloc.dispatch(FetchHome());
+
     return Scaffold(
       appBar: _buildAppBar(),
       drawer: _buildDrawer(),
+      body: _buildBody(homeBloc),
+    );
+  }
+
+  Widget _buildBody(HomeBloc homeBloc) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoaded) {
+          final categories = state.categories;
+
+          return GridView.count(crossAxisCount: 2, children: List.generate(categories.length, (index) {
+            return _buildItemCategory(categories, index);
+          }),);
+        }
+        if (state is HomeError) {
+          return Center(child: Text("Error"),);
+        }
+        return Center(child: CircularProgressIndicator(),);
+      }
+    );
+  }
+
+  Widget _buildItemCategory(List<Category> categories, int index) {
+    final category = categories[index];
+
+    final widthScreen = MediaQuery.of(context).size.width;
+    final space = 4.0;
+
+    final widthItem = widthScreen / 2 - space * 4;
+
+    final paddingLeft = index % 2 != 0 ? space / 2 : space;
+    final paddingRight = index % 2 == 0 ? space / 2 : space;
+    final paddingTop = space;
+    final paddingBottom = index == (categories.length - 1) ? space : 0.0;
+
+    return Padding(
+      padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom, left: paddingLeft, right: paddingRight),
+      child: Container(
+        width: widthItem,
+        height: widthItem,
+        color: Colors.blue,
+        decoration: BoxDecoration(
+          borderRadius:
+        ),
+        child: Stack(
+          children: <Widget>[
+            Text(category.name)
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildAppBar() {
     return AppBar(
-      title: Text("Cooking"),
+      title: Text(AppStrings.title_toolbar_categories),
+      backgroundColor: AppColors.colorPrimary,
     );
   }
 
