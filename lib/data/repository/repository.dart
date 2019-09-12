@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:cooking_flutter/data/constant/constant.dart';
 import 'package:cooking_flutter/data/model/category.dart';
+import 'package:cooking_flutter/data/model/list_category_response.dart';
 import 'package:cooking_flutter/data/model/recipe.dart';
-import 'package:cooking_flutter/data/remote/response/list_category_response.dart';
 import 'package:http/http.dart' as http;
 
-abstract class RemoteDataSource {
+abstract class Repository {
   Future<List<Category>> getCategories();
 
   Future<List<Recipe>> getRecipes();
@@ -16,17 +16,17 @@ abstract class RemoteDataSource {
   Future<List<Recipe>> getRecipesByName(String name);
 }
 
-class _RemoteDataSource implements RemoteDataSource {
-  static _RemoteDataSource _instance;
+class RepositoryImpl implements Repository {
+  static RepositoryImpl _instance;
 
-  factory _RemoteDataSource() {
+  factory RepositoryImpl() {
     if (_instance == null) {
-      _instance = _RemoteDataSource._internal();
+      _instance = RepositoryImpl._internal();
     }
     return _instance;
   }
 
-  _RemoteDataSource._internal();
+  RepositoryImpl._internal();
 
   @override
   Future<List<Category>> getCategories() async {

@@ -3,7 +3,7 @@ import 'package:cooking_flutter/utils/app_images.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
-class App extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
