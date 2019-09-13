@@ -39,6 +39,10 @@ class AppStrings {
 
   static const hint_search = "Nhập tên món ăn";
 
+  static const msg_no_data_refresh = "Không có dữ liệu, vui lòng vuốt xuống hoặc nhất nút tải lại!";
+  static const msg_no_data = "Không có dữ liệu!";
+  static const title_reload_data = "Tải lại";
+
 //  Firebase analytics
   static const action_analytics = "Open_";
 }

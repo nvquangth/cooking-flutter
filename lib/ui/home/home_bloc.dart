@@ -4,23 +4,17 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'dart:async';
 
-abstract class HomeEvent {
-}
+abstract class HomeEvent {}
 
-class FetchHome extends HomeEvent {
-}
+class FetchHome extends HomeEvent {}
 
-class RefreshHome extends HomeEvent {
-}
+class RefreshHome extends HomeEvent {}
 
-abstract class HomeState {
-}
+abstract class HomeState {}
 
-class HomeEmpty extends HomeState {
-}
+class HomeEmpty extends HomeState {}
 
-class HomeLoading extends HomeState {
-}
+class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final List<Category> categories;
@@ -28,11 +22,9 @@ class HomeLoaded extends HomeState {
   HomeLoaded({@required this.categories});
 }
 
-class HomeError extends HomeState {
-}
+class HomeError extends HomeState {}
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-
   final RepositoryImpl repository;
 
   HomeBloc({@required this.repository});
@@ -44,19 +36,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is FetchHome) {
       yield HomeLoading();
-
-      try {
-        final List<Category> categories = await repository.getCategories();
-
-        yield HomeLoaded(categories: categories);
-      } catch(e) {
-        yield HomeError();
-      }
     }
 
-    if (event is RefreshHome) {
+    try {
+      final List<Category> categories = await repository.getCategories();
 
+      yield HomeLoaded(categories: categories);
+    } catch (_) {
+      yield HomeError();
     }
   }
-
 }
