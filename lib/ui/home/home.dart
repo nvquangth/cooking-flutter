@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cooking_flutter/data/constant/constant.dart';
 import 'package:cooking_flutter/data/model/category.dart';
+import 'package:cooking_flutter/data/repository/repository.dart';
 import 'package:cooking_flutter/ui/categorydetail/category_detail.dart';
 import 'package:cooking_flutter/ui/categorydetail/category_detail_bloc.dart';
 import 'package:cooking_flutter/ui/home/home_bloc.dart';
@@ -134,6 +135,7 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
                   Constant.BASE_URL + category.images[Random().nextInt(3)],
+                  fit: BoxFit.cover,
                 ),
               ),
               Positioned(
@@ -322,8 +324,9 @@ class _HomeState extends State<Home> {
 
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => BlocProvider(
-              builder: (context) => CategoryDetailBloc(),
-              child: CategoryDetail(),
+              builder: (context) => CategoryDetailBloc(
+                  repository: RepositoryImpl(), category: category),
+              child: CategoryDetail(category: category,),
             )));
   }
 }

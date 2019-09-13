@@ -22,10 +22,14 @@ class Recipe {
         img = map["img"],
         totalComponent = map["total_components"],
         totalStep = map["total_steps"],
-        components = List<Component>.from(
-            map["components"].map((it) => Component.fromJsonMap(it))),
-        cookSteps = List<CookStep>.from(
-            map["cook_steps"].map((it) => CookStep.fromJsonMap(it)));
+        components = map["components"] != null
+            ? List<Component>.from(
+                map["components"].map((it) => Component.fromJsonMap(it)))
+            : null,
+        cookSteps = map["cook_steps"] != null
+            ? List<CookStep>.from(
+                map["cook_steps"].map((it) => CookStep.fromJsonMap(it)))
+            : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
