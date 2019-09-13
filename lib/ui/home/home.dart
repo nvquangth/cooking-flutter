@@ -11,15 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
-
 }
 
 class _HomeState extends State<Home> {
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -29,27 +26,32 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: _buildAppBar(),
-      drawer: _buildDrawer(),
+      drawer: _buildDrawer(homeBloc),
       body: _buildBody(homeBloc),
     );
   }
 
   Widget _buildBody(HomeBloc homeBloc) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state is HomeLoaded) {
-          final categories = state.categories;
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      if (state is HomeLoaded) {
+        final categories = state.categories;
 
-          return GridView.count(crossAxisCount: 2, children: List.generate(categories.length, (index) {
+        return GridView.count(
+          crossAxisCount: 2,
+          children: List.generate(categories.length, (index) {
             return _buildItemCategory(categories, index);
-          }),);
-        }
-        if (state is HomeError) {
-          return Center(child: Text("Error"),);
-        }
-        return Center(child: CircularProgressIndicator(),);
+          }),
+        );
       }
-    );
+      if (state is HomeError) {
+        return Center(
+          child: Text("Error"),
+        );
+      }
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    });
   }
 
   Widget _buildItemCategory(List<Category> categories, int index) {
@@ -66,18 +68,19 @@ class _HomeState extends State<Home> {
     final paddingBottom = index == (categories.length - 1) ? space : 0.0;
 
     return Padding(
-      padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom, left: paddingLeft, right: paddingRight),
+      padding: EdgeInsets.only(
+          top: paddingTop,
+          bottom: paddingBottom,
+          left: paddingLeft,
+          right: paddingRight),
       child: Container(
         width: widthItem,
         height: widthItem,
-        color: Colors.blue,
         decoration: BoxDecoration(
-          borderRadius:
-        ),
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(8.0))),
         child: Stack(
-          children: <Widget>[
-            Text(category.name)
-          ],
+          children: <Widget>[Text(category.name)],
         ),
       ),
     );
@@ -90,7 +93,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildDrawer() {
+  Widget _buildDrawer(HomeBloc homeBloc) {
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,8 +137,12 @@ class _HomeState extends State<Home> {
                   color: AppColors.color_gray_600),
             ),
           ),
-          Expanded(
-              child: ListView.separated(
+          Expanded(child:
+              BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+            if (state is HomeLoaded) {
+              final categories = state.categories;
+
+              return ListView.separated(
                   padding: EdgeInsets.only(top: 8.0),
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -150,7 +157,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           Expanded(
-                            child: Text("Test"),
+                            child: Text(categories[index].name),
                           )
                         ],
                       ),
@@ -159,7 +166,17 @@ class _HomeState extends State<Home> {
                   separatorBuilder: (context, index) => Divider(
                         color: AppColors.color_gray_600,
                       ),
-                  itemCount: 20)),
+                  itemCount: categories.length);
+            }
+            if (state is HomeError) {
+              return Center(
+                child: Text("Error"),
+              );
+            }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          })),
           ListTile(
             title: Text(AppStrings.title_rate_me),
             leading: Icon(
