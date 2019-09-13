@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cooking_flutter/data/constant/constant.dart';
@@ -17,9 +18,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Completer<void> _refreshCompleter;
+
   @override
   void initState() {
     super.initState();
+    _refreshCompleter = Completer<void>();
   }
 
   @override
@@ -35,35 +39,72 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildBody(HomeBloc homeBloc) {
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state is HomeLoaded) {
-        final categories = state.categories;
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        if (state is HomeLoaded || state is HomeError) {
+          _refreshCompleter?.complete();
+          _refreshCompleter = Completer();
+        }
+      },
+      child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+        if (state is HomeLoaded) {
+          final categories = state.categories;
 
-        return GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(categories.length, (index) {
-            return _buildItemCategory(categories, index);
-          }),
-        );
-      }
-      if (state is HomeError) {
+          return RefreshIndicator(
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: List.generate(categories.length, (index) {
+                return _buildItemCategory(categories, index);
+              }),
+            ),
+            onRefresh: () {
+              homeBloc.dispatch(RefreshHome());
+              return _refreshCompleter.future;
+            },
+          );
+        }
+        if (state is HomeError) {
+          return RefreshIndicator(
+            child: ListView(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16.0, bottom: 8.0, left: 64.0, right: 64.0),
+                      child: Text(
+                        AppStrings.msg_no_data_refresh,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(),
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        homeBloc.dispatch(FetchHome());
+                      },
+                      child: Text(AppStrings.title_reload_data),
+                    )
+                  ],
+                )
+              ],
+            ),
+            onRefresh: () {
+              homeBloc.dispatch(RefreshHome());
+              return _refreshCompleter.future;
+            },
+          );
+        }
         return Center(
-          child: Text("Error"),
+          child: CircularProgressIndicator(),
         );
-      }
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    });
+      }),
+    );
   }
 
   Widget _buildItemCategory(List<Category> categories, int index) {
     final category = categories[index];
 
-    final widthScreen = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final widthScreen = MediaQuery.of(context).size.width;
     final space = 4.0;
 
     final widthItem = widthScreen / 2 - space * 4;
@@ -92,7 +133,7 @@ class _HomeState extends State<Home> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
-                  Constant.BASE_URL + category.images[0],
+                  Constant.BASE_URL + category.images[Random().nextInt(3)],
                 ),
               ),
               Positioned(
@@ -188,7 +229,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Expanded(child:
-          BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+              BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             if (state is HomeLoaded) {
               final categories = state.categories;
 
@@ -203,7 +244,7 @@ class _HomeState extends State<Home> {
                         children: <Widget>[
                           Padding(
                             padding:
-                            const EdgeInsets.only(left: 8.0, right: 8.0),
+                                const EdgeInsets.only(left: 8.0, right: 8.0),
                             child: Icon(
                               Icons.label,
                               color: AppColors.colorAccent,
@@ -216,15 +257,29 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   },
-                  separatorBuilder: (context, index) =>
-                      Divider(
+                  separatorBuilder: (context, index) => Divider(
                         color: AppColors.color_gray_600,
                       ),
                   itemCount: categories.length);
             }
             if (state is HomeError) {
               return Center(
-                child: Text("Error"),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(AppStrings.msg_no_data),
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        homeBloc.dispatch(FetchHome());
+                      },
+                      child: Text(AppStrings.title_reload_data),
+                    )
+                  ],
+                ),
               );
             }
             return Center(
@@ -265,9 +320,10 @@ class _HomeState extends State<Home> {
       Navigator.pop(context);
     }
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-        BlocProvider(
-          builder: (context) => CategoryDetailBloc(), child: CategoryDetail(),
-        )));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+              builder: (context) => CategoryDetailBloc(),
+              child: CategoryDetail(),
+            )));
   }
 }
