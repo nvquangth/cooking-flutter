@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:cooking_flutter/data/constant/constant.dart';
 import 'package:cooking_flutter/data/model/category.dart';
+import 'package:cooking_flutter/ui/categorydetail/category_detail.dart';
+import 'package:cooking_flutter/ui/categorydetail/category_detail_bloc.dart';
 import 'package:cooking_flutter/ui/home/home_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
@@ -57,7 +60,10 @@ class _HomeState extends State<Home> {
   Widget _buildItemCategory(List<Category> categories, int index) {
     final category = categories[index];
 
-    final widthScreen = MediaQuery.of(context).size.width;
+    final widthScreen = MediaQuery
+        .of(context)
+        .size
+        .width;
     final space = 4.0;
 
     final widthItem = widthScreen / 2 - space * 4;
@@ -67,20 +73,64 @@ class _HomeState extends State<Home> {
     final paddingTop = space;
     final paddingBottom = index == (categories.length - 1) ? space : 0.0;
 
-    return Padding(
-      padding: EdgeInsets.only(
-          top: paddingTop,
-          bottom: paddingBottom,
-          left: paddingLeft,
-          right: paddingRight),
-      child: Container(
-        width: widthItem,
-        height: widthItem,
-        decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: Stack(
-          children: <Widget>[Text(category.name)],
+    return GestureDetector(
+      onTap: () {
+        _onItemCategoryClick(category, false);
+      },
+      child: Padding(
+        padding: EdgeInsets.only(
+            top: paddingTop,
+            bottom: paddingBottom,
+            left: paddingLeft,
+            right: paddingRight),
+        child: Container(
+          width: widthItem,
+          height: widthItem,
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  Constant.BASE_URL + category.images[0],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 64.0,
+                  decoration: BoxDecoration(
+                      color: AppColors.color_transparent_48,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0))),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          category.name.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          category.totalRecipe.toString() + " món",
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -138,7 +188,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Expanded(child:
-              BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             if (state is HomeLoaded) {
               final categories = state.categories;
 
@@ -146,11 +196,14 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 8.0),
                   itemBuilder: (context, index) {
                     return GestureDetector(
+                      onTap: () {
+                        _onItemCategoryClick(categories[index], true);
+                      },
                       child: Row(
                         children: <Widget>[
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 8.0, right: 8.0),
+                            const EdgeInsets.only(left: 8.0, right: 8.0),
                             child: Icon(
                               Icons.label,
                               color: AppColors.colorAccent,
@@ -163,7 +216,8 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   },
-                  separatorBuilder: (context, index) => Divider(
+                  separatorBuilder: (context, index) =>
+                      Divider(
                         color: AppColors.color_gray_600,
                       ),
                   itemCount: categories.length);
@@ -205,4 +259,15 @@ class _HomeState extends State<Home> {
   void _onRateMeClick() {}
 
   void _onFeedbackClick() {}
+
+  void _onItemCategoryClick(Category category, bool fromDrawer) {
+    if (fromDrawer) {
+      Navigator.pop(context);
+    }
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+        BlocProvider(
+          builder: (context) => CategoryDetailBloc(), child: CategoryDetail(),
+        )));
+  }
 }
