@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:cooking_flutter/data/constant/constant.dart';
 import 'package:cooking_flutter/data/model/category.dart';
-import 'package:cooking_flutter/data/model/list_category_response.dart';
+import 'package:cooking_flutter/data/model/category_response.dart';
+import 'package:cooking_flutter/data/model/category_detail_response.dart';
 import 'package:cooking_flutter/data/model/recipe.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +12,7 @@ abstract class Repository {
 
   Future<List<Recipe>> getRecipes();
 
-  Future<List<Recipe>> getRecipesByCategory(int categoryId);
+  Future<List<Recipe>> getRecipesByCategory(String categoryId);
 
   Future<List<Recipe>> getRecipesByName(String name);
 }
@@ -38,14 +39,16 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<List<Recipe>> getRecipes() {
-    // TODO: implement getRecipes
     return null;
   }
 
   @override
-  Future<List<Recipe>> getRecipesByCategory(int categoryId) {
-    // TODO: implement getRecipesByCategory
-    return null;
+  Future<List<Recipe>> getRecipesByCategory(String categoryId) async {
+    final response =
+        await http.get(_getFullUrl(Constant.ROUTE_CATEGORY) + "/$categoryId");
+    return _isSuccess(response)
+        ? CategoryDetailResponse.fromJsonMap(json.decode(response.body)).recipes
+        : throw Exception(Constant.PARAM_ERROR);
   }
 
   @override
@@ -57,7 +60,7 @@ class RepositoryImpl implements Repository {
   String _getFullUrl(String path) => Constant.BASE_URL + path;
 
   Uri _uriPathQuery(String path, Map<String, String> query) =>
-      Uri.https(Constant.DOMAIN_URL, "/$path", query);
+      Uri.https(Constant.BASE_URL, "$path", query);
 
   bool _isSuccess(http.Response response) {
     return response.statusCode >= 200 && response.statusCode < 300;
