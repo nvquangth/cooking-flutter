@@ -120,11 +120,85 @@ class _CategoryDetailState extends State<CategoryDetail> {
       child: Container(
         height: 200.0,
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             Image.network(
               recipe.img,
               fit: BoxFit.cover,
             ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 72.0,
+                color: AppColors.color_transparent_48,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, bottom: 8.0, right: 8.0, top: 8.0),
+                      child: Text(
+                        recipe.name,
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                        maxLines: 1,
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 4.0),
+                          child: Icon(
+                            Icons.alarm,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${recipe.time} phút',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 4.0),
+                          child: Icon(
+                            Icons.group,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${recipe.serving} người',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 4.0),
+                          child: Icon(
+                            Icons.list,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${recipe.totalComponent} nguyên liệu',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),
