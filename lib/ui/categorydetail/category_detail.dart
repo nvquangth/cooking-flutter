@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:cooking_flutter/data/model/category.dart';
 import 'package:cooking_flutter/data/model/recipe.dart';
+import 'package:cooking_flutter/data/repository/repository.dart';
 import 'package:cooking_flutter/ui/categorydetail/category_detail_bloc.dart';
+import 'package:cooking_flutter/ui/recipedetail/recipe_detail.dart';
+import 'package:cooking_flutter/ui/recipedetail/recipe_detail_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -205,5 +207,12 @@ class _CategoryDetailState extends State<CategoryDetail> {
     );
   }
 
-  void _onItemRecipeClick(Recipe recipe) {}
+  void _onItemRecipeClick(Recipe recipe) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+              builder: (context) => RecipeDetailBloc(
+                  repository: RepositoryImpl(), recipe: recipe),
+              child: RecipeDetail(),
+            )));
+  }
 }
