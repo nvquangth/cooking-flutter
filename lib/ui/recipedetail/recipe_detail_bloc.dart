@@ -18,6 +18,12 @@ class RefreshRecipeDetail extends RecipeDetailEvent {
   RefreshRecipeDetail({@required this.recipeId});
 }
 
+class AddToFavoriteRecipeDetail extends RecipeDetailEvent {
+  final Recipe recipe;
+
+  AddToFavoriteRecipeDetail({@required this.recipe});
+}
+
 abstract class RecipeDetailState {}
 
 class RecipeDetailEmpty extends RecipeDetailState {}
@@ -32,6 +38,8 @@ class RecipeDetailLoaded extends RecipeDetailState {
 
 class RecipeDetailError extends RecipeDetailState {}
 
+class RecipeDetailAddToFavorite extends RecipeDetailState {}
+
 class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
   final RepositoryImpl repository;
   final Recipe recipe;
@@ -45,13 +53,27 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
   Stream<RecipeDetailState> mapEventToState(RecipeDetailEvent event) async* {
     if (event is FetchRecipeDetail) {
       yield RecipeDetailLoading();
+
+      try {
+        final Recipe result = await repository.getRecipeById(recipe.id);
+        yield RecipeDetailLoaded(recipe: result);
+      } catch (_) {
+        yield RecipeDetailError();
+      }
     }
 
-    try {
-      final Recipe result = await repository.getRecipeById(recipe.id);
-      yield RecipeDetailLoaded(recipe: result);
-    } catch (_) {
-      yield RecipeDetailError();
+    if (event is RefreshRecipeDetail) {
+      try {
+        final Recipe result = await repository.getRecipeById(recipe.id);
+        yield RecipeDetailLoaded(recipe: result);
+      } catch (_) {
+        yield RecipeDetailError();
+      }
+    }
+
+    if (event is AddToFavoriteRecipeDetail) {
+      await repository.insertRecipe(recipe);
+      yield RecipeDetailAddToFavorite();
     }
   }
 }
