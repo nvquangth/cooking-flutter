@@ -13,6 +13,18 @@ class Recipe {
   List<Component> components;
   List<CookStep> cookSteps;
 
+  Recipe(
+      {this.id,
+      this.name,
+      this.time,
+      this.level,
+      this.serving,
+      this.img,
+      this.totalComponent,
+      this.totalStep,
+      this.components,
+      this.cookSteps});
+
   Recipe.fromJsonMap(Map<String, dynamic> map)
       : id = map["id"],
         name = map["name"],

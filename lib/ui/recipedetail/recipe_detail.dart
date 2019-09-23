@@ -7,6 +7,7 @@ import 'package:cooking_flutter/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:toast/toast.dart';
 
 class RecipeDetail extends StatefulWidget {
   @override
@@ -49,8 +50,11 @@ class _RecipeDetailState extends State<RecipeDetail> {
       },
       child: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
         builder: (context, state) {
-          if (state is RecipeDetailLoaded) {
-            _recipe = state.recipe;
+          if (state is RecipeDetailLoaded ||
+              state is RecipeDetailAddToFavorite) {
+            if (state is RecipeDetailLoaded) {
+              _recipe = state.recipe;
+            }
 
             return RefreshIndicator(
               child: ListView(
@@ -110,17 +114,22 @@ class _RecipeDetailState extends State<RecipeDetail> {
                           Positioned(
                             right: 0,
                             bottom: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: AppColors.color_transparent_48,
-                                    shape: BoxShape.circle),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.white,
+                            child: GestureDetector(
+                              onTap: _onFavoriteClick,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.color_transparent_48,
+                                      shape: BoxShape.circle),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      state is RecipeDetailAddToFavorite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -262,11 +271,19 @@ class _RecipeDetailState extends State<RecipeDetail> {
             );
           }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          if (state is RecipeDetailLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Container();
         },
       ),
     );
+  }
+
+  void _onFavoriteClick() {
+    _bloc.dispatch(AddToFavoriteRecipeDetail(recipe: _recipe));
   }
 }
