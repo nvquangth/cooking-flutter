@@ -47,11 +47,18 @@ class _RecipeDetailState extends State<RecipeDetail> {
           _refreshCompleter?.complete();
           _refreshCompleter = Completer<void>();
         }
+        if (state is RecipeDetailAddToFavorite) {
+          Toast.show(AppStrings.msg_add_favorite, context);
+        }
+        if (state is RecipeDetailRemoveFromFavorite) {
+          Toast.show(AppStrings.msg_remove_favorite, context);
+        }
       },
       child: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
         builder: (context, state) {
           if (state is RecipeDetailLoaded ||
-              state is RecipeDetailAddToFavorite) {
+              state is RecipeDetailAddToFavorite ||
+              state is RecipeDetailRemoveFromFavorite) {
             if (state is RecipeDetailLoaded) {
               _recipe = state.recipe;
             }
@@ -125,7 +132,7 @@ class _RecipeDetailState extends State<RecipeDetail> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Icon(
-                                      state is RecipeDetailAddToFavorite
+                                      _recipe.isFavorite
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       color: Colors.white,
@@ -284,6 +291,10 @@ class _RecipeDetailState extends State<RecipeDetail> {
   }
 
   void _onFavoriteClick() {
-    _bloc.dispatch(AddToFavoriteRecipeDetail(recipe: _recipe));
+    if (_bloc.recipe.isFavorite) {
+      _bloc.dispatch(RemoveFromFavoriteRecipeDetail(recipe: _recipe));
+    } else {
+      _bloc.dispatch(AddToFavoriteRecipeDetail(recipe: _recipe));
+    }
   }
 }

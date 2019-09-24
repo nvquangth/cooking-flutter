@@ -24,6 +24,12 @@ class AddToFavoriteRecipeDetail extends RecipeDetailEvent {
   AddToFavoriteRecipeDetail({@required this.recipe});
 }
 
+class RemoveFromFavoriteRecipeDetail extends RecipeDetailEvent {
+  final Recipe recipe;
+
+  RemoveFromFavoriteRecipeDetail({@required this.recipe});
+}
+
 abstract class RecipeDetailState {}
 
 class RecipeDetailEmpty extends RecipeDetailState {}
@@ -40,9 +46,11 @@ class RecipeDetailError extends RecipeDetailState {}
 
 class RecipeDetailAddToFavorite extends RecipeDetailState {}
 
+class RecipeDetailRemoveFromFavorite extends RecipeDetailState {}
+
 class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
   final RepositoryImpl repository;
-  final Recipe recipe;
+  Recipe recipe;
 
   RecipeDetailBloc({@required this.repository, @required this.recipe});
 
@@ -56,7 +64,18 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
 
       try {
         final Recipe result = await repository.getRecipeById(recipe.id);
-        yield RecipeDetailLoaded(recipe: result);
+        recipe = result;
+        recipe.totalComponent = recipe.components.length;
+        recipe.totalStep = recipe.cookSteps.length;
+
+        var rl = await repository.getRecipeFromLocal(recipe.id);
+        if (rl != null) {
+          recipe.isFavorite = true;
+        } else {
+          recipe.isFavorite = false;
+        }
+
+        yield RecipeDetailLoaded(recipe: recipe);
       } catch (_) {
         yield RecipeDetailError();
       }
@@ -65,7 +84,18 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
     if (event is RefreshRecipeDetail) {
       try {
         final Recipe result = await repository.getRecipeById(recipe.id);
-        yield RecipeDetailLoaded(recipe: result);
+        recipe = result;
+        recipe.totalComponent = recipe.components.length;
+        recipe.totalStep = recipe.cookSteps.length;
+
+        var rl = await repository.getRecipeFromLocal(recipe.id);
+        if (rl != null) {
+          recipe.isFavorite = true;
+        } else {
+          recipe.isFavorite = false;
+        }
+
+        yield RecipeDetailLoaded(recipe: recipe);
       } catch (_) {
         yield RecipeDetailError();
       }
@@ -73,7 +103,14 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
 
     if (event is AddToFavoriteRecipeDetail) {
       await repository.insertRecipe(recipe);
+      recipe.isFavorite = true;
       yield RecipeDetailAddToFavorite();
+    }
+
+    if (event is RemoveFromFavoriteRecipeDetail) {
+      await repository.deleteRecipe(recipe);
+      recipe.isFavorite = false;
+      yield RecipeDetailRemoveFromFavorite();
     }
   }
 }
