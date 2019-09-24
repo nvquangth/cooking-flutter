@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cooking_flutter/data/model/recipe.dart';
 import 'package:cooking_flutter/ui/recipedetail/recipe_detail_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
+import 'package:cooking_flutter/utils/app_images.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,8 +115,9 @@ class _RecipeDetailState extends State<RecipeDetail> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: <Widget>[
-                          Image.network(
-                            _recipe.img,
+                          FadeInImage.assetNetwork(
+                            placeholder: AppImages.default_image_large,
+                            image: _recipe.img,
                             fit: BoxFit.cover,
                           ),
                           Positioned(
