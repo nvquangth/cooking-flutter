@@ -53,6 +53,17 @@ class CategoryDetailBloc
     try {
       final List<Recipe> recipes =
           await repository.getRecipesByCategory(category.id);
+
+      for (final recipe in recipes) {
+        final rl = await repository.getRecipeFromLocal(recipe.id);
+
+        if (rl != null) {
+          recipe.isFavorite = true;
+        } else {
+          recipe.isFavorite = false;
+        }
+      }
+
       yield CategoryDetailLoaded(recipes: recipes);
     } catch (_) {
       yield CategoryDetailError();

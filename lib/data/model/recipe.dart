@@ -12,6 +12,7 @@ class Recipe {
   int totalStep;
   List<Component> components;
   List<CookStep> cookSteps;
+  bool isFavorite;
 
   Recipe(
       {this.id,
@@ -23,7 +24,8 @@ class Recipe {
       this.totalComponent,
       this.totalStep,
       this.components,
-      this.cookSteps});
+      this.cookSteps,
+      this.isFavorite});
 
   Recipe.fromJsonMap(Map<String, dynamic> map)
       : id = map["id"],

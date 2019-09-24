@@ -195,10 +195,12 @@ class _CategoryDetailState extends State<CategoryDetail> {
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                ),
+                child: recipe.isFavorite
+                    ? Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                      )
+                    : Container(),
               ),
             )
           ],
