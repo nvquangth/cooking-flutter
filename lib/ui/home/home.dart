@@ -6,6 +6,8 @@ import 'package:cooking_flutter/data/model/category.dart';
 import 'package:cooking_flutter/data/repository/repository.dart';
 import 'package:cooking_flutter/ui/categorydetail/category_detail.dart';
 import 'package:cooking_flutter/ui/categorydetail/category_detail_bloc.dart';
+import 'package:cooking_flutter/ui/favorite/favorite.dart';
+import 'package:cooking_flutter/ui/favorite/favorite_bloc.dart';
 import 'package:cooking_flutter/ui/home/home_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
@@ -309,7 +311,14 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _onFavoriteClick() {}
+  void _onFavoriteClick() {
+    Navigator.pop(context);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+            builder: (context) => FavoriteBloc(repository: RepositoryImpl()),
+            child: Favorite())));
+  }
 
   void _onSearchClick() {}
 
@@ -326,7 +335,9 @@ class _HomeState extends State<Home> {
         builder: (context) => BlocProvider(
               builder: (context) => CategoryDetailBloc(
                   repository: RepositoryImpl(), category: category),
-              child: CategoryDetail(category: category,),
+              child: CategoryDetail(
+                category: category,
+              ),
             )));
   }
 }
