@@ -135,8 +135,10 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: Image.network(
-                  Constant.BASE_URL + category.images[Random().nextInt(3)],
+                child: FadeInImage.assetNetwork(
+                  placeholder: AppImages.default_image,
+                  image:
+                      Constant.BASE_URL + category.images[Random().nextInt(3)],
                   fit: BoxFit.cover,
                 ),
               ),
