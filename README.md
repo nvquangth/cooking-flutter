@@ -1,6 +1,7 @@
-# cooking_flutter
+# cooking-flutter
 
 API
+
 **BASE_URL: https://gentle-fjord-54250.herokuapp.com**
 
 - Get list category: 
