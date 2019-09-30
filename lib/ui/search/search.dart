@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:cooking_flutter/data/model/recipe.dart';
 import 'package:cooking_flutter/data/repository/repository.dart';
-import 'package:cooking_flutter/ui/favorite/favorite_bloc.dart';
 import 'package:cooking_flutter/ui/recipedetail/recipe_detail.dart';
 import 'package:cooking_flutter/ui/recipedetail/recipe_detail_bloc.dart';
-import 'package:cooking_flutter/ui/search/search.dart';
 import 'package:cooking_flutter/ui/search/search_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
@@ -13,52 +11,62 @@ import 'package:cooking_flutter/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Favorite extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  State<Favorite> createState() => _FavoriteState();
+  State<Search> createState() => _SearchState();
 }
 
-class _FavoriteState extends State<Favorite> {
+class _SearchState extends State<Search> {
+  SearchBloc _bloc;
   Completer<void> _refreshCompleter;
-  FavoriteBloc _bloc;
 
   @override
   void initState() {
     super.initState();
+    _bloc = BlocProvider.of<SearchBloc>(context);
     _refreshCompleter = Completer<void>();
-    _bloc = BlocProvider.of<FavoriteBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    _bloc.dispatch(FetchFavorite());
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.title_favorite),
-        backgroundColor: AppColors.colorPrimary,
+        title: TextField(
+          controller: _bloc.textEditingController,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: AppStrings.hint_search,
+              hintStyle: TextStyle(color: Colors.white)),
+          onSubmitted: (String q) {
+            _bloc.dispatch(ExecuteSearch(q: q));
+          },
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
-            onPressed: _onSearchClick,
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              _bloc.dispatch(ClearQuerySearch());
+            },
           )
         ],
+        backgroundColor: AppColors.colorPrimary,
       ),
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
-    return BlocListener<FavoriteBloc, FavoriteState>(
+    return BlocListener<SearchBloc, SearchState>(
       listener: (context, state) {
-        if (state is FavoriteLoaded || state is FavoriteError) {
+        if (state is SearchLoaded || state is SearchError) {
           _refreshCompleter?.complete();
           _refreshCompleter = Completer();
         }
       },
-      child: BlocBuilder<FavoriteBloc, FavoriteState>(
+      child: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
-          if (state is FavoriteLoaded) {
+          if (state is SearchLoaded) {
             final recipes = state.recipes;
 
             return RefreshIndicator(
@@ -68,13 +76,13 @@ class _FavoriteState extends State<Favorite> {
                     return _buildItemRecipe(recipes, index);
                   }),
               onRefresh: () {
-                _bloc.dispatch(RefreshFavorite());
+                _bloc.dispatch(RefreshSearch(q: _bloc.q));
                 return _refreshCompleter.future;
               },
             );
           }
 
-          if (state is FavoriteError) {
+          if (state is SearchError) {
             return RefreshIndicator(
               child: ListView(
                 children: <Widget>[
@@ -91,7 +99,7 @@ class _FavoriteState extends State<Favorite> {
                       ),
                       RaisedButton(
                         onPressed: () {
-                          _bloc.dispatch(FetchFavorite());
+                          _bloc.dispatch(ExecuteSearch(q: _bloc.q));
                         },
                         child: Text(AppStrings.title_reload_data),
                       )
@@ -100,15 +108,31 @@ class _FavoriteState extends State<Favorite> {
                 ],
               ),
               onRefresh: () {
-                _bloc.dispatch(FetchFavorite());
+                _bloc.dispatch(ExecuteSearch(q: _bloc.q));
                 return _refreshCompleter.future;
               },
             );
           }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          if (state is SearchLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is SearchEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  AppStrings.msg_no_data_search,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+
+          return Container();
         },
       ),
     );
@@ -218,14 +242,6 @@ class _FavoriteState extends State<Favorite> {
               builder: (context) => RecipeDetailBloc(
                   repository: RepositoryImpl(), recipe: recipe),
               child: RecipeDetail(),
-            )));
-  }
-
-  void _onSearchClick() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => BlocProvider(
-              builder: (context) => SearchBloc(repository: RepositoryImpl()),
-              child: Search(),
             )));
   }
 }

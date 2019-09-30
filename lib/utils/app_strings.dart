@@ -32,7 +32,7 @@ class AppStrings {
 
   static const msg_add_favorite = "Đã thêm vào yêu thích!";
   static const msg_remove_favorite = "Đã xóa khỏi yêu thích!";
-  static const msg_no_data_search = "Rất tiếc, không có món ăn bạn cần tìm!";
+  static const msg_no_data_search = "Rất tiếc, không có món ăn bạn cần tìm. Vui lòng tìm kiếm với từ khóa khác!";
   static const msg_mail_error =
       "Không tìm thấy ứng dụng gửi mail, vui lòng thử lại!";
   static const msg_thanks = "Cảm ơn bạn đã ủng hộ chúng tôi!";
