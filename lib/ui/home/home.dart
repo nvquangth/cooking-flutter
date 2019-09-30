@@ -9,6 +9,8 @@ import 'package:cooking_flutter/ui/categorydetail/category_detail_bloc.dart';
 import 'package:cooking_flutter/ui/favorite/favorite.dart';
 import 'package:cooking_flutter/ui/favorite/favorite_bloc.dart';
 import 'package:cooking_flutter/ui/home/home_bloc.dart';
+import 'package:cooking_flutter/ui/search/search.dart';
+import 'package:cooking_flutter/ui/search/search_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
@@ -187,6 +189,14 @@ class _HomeState extends State<Home> {
     return AppBar(
       title: Text(AppStrings.title_toolbar_categories),
       backgroundColor: AppColors.colorPrimary,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            _onSearchClick(false);
+          },
+        )
+      ],
     );
   }
 
@@ -218,7 +228,9 @@ class _HomeState extends State<Home> {
               Icons.search,
               color: AppColors.colorPrimary,
             ),
-            onTap: _onSearchClick,
+            onTap: () {
+              _onSearchClick(true);
+            },
           ),
           Container(
             height: 1.0,
@@ -322,7 +334,17 @@ class _HomeState extends State<Home> {
             child: Favorite())));
   }
 
-  void _onSearchClick() {}
+  void _onSearchClick(bool fromDrawer) {
+    if (fromDrawer) {
+      Navigator.pop(context);
+    }
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+              builder: (context) => SearchBloc(repository: RepositoryImpl()),
+              child: Search(),
+            )));
+  }
 
   void _onRateMeClick() {}
 

@@ -70,9 +70,12 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<List<Recipe>> getRecipesByName(String name) {
-    // TODO: implement getRecipesByName
-    return null;
+  Future<List<Recipe>> getRecipesByName(String name) async {
+    final map = {"q": name};
+    final response = await http.get(_uriPathQuery(Constant.ROUTE_RECIPE, map));
+    return _isSuccess(response)
+        ? CategoryDetailResponse.fromJsonMap(json.decode(response.body)).recipes
+        : throw Exception(Constant.PARAM_ERROR);
   }
 
   @override
@@ -87,7 +90,7 @@ class RepositoryImpl implements Repository {
   String _getFullUrl(String path) => Constant.BASE_URL + path;
 
   Uri _uriPathQuery(String path, Map<String, String> query) =>
-      Uri.https(Constant.BASE_URL, "$path", query);
+      Uri.https(Constant.DOMAIN_URL, "$path", query);
 
   bool _isSuccess(http.Response response) {
     return response.statusCode >= 200 && response.statusCode < 300;

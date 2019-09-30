@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:cooking_flutter/data/model/recipe.dart';
+import 'package:cooking_flutter/data/repository/repository.dart';
 import 'package:cooking_flutter/ui/recipedetail/recipe_detail_bloc.dart';
+import 'package:cooking_flutter/ui/search/search.dart';
+import 'package:cooking_flutter/ui/search/search_bloc.dart';
 import 'package:cooking_flutter/utils/app_colors.dart';
 import 'package:cooking_flutter/utils/app_images.dart';
 import 'package:cooking_flutter/utils/app_strings.dart';
@@ -36,6 +39,12 @@ class _RecipeDetailState extends State<RecipeDetail> {
       appBar: AppBar(
         title: Text(_recipe.name),
         backgroundColor: AppColors.colorPrimary,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: _onSearchClick,
+          )
+        ],
       ),
       body: _buildBody(),
     );
@@ -298,5 +307,13 @@ class _RecipeDetailState extends State<RecipeDetail> {
     } else {
       _bloc.dispatch(AddToFavoriteRecipeDetail(recipe: _recipe));
     }
+  }
+
+  void _onSearchClick() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+              builder: (context) => SearchBloc(repository: RepositoryImpl()),
+              child: Search(),
+            )));
   }
 }
