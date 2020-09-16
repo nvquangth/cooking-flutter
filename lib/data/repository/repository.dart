@@ -170,7 +170,7 @@ class RepositoryImpl implements Repository {
   Future<List<Recipe>> getRecipesByNameFromLocal(String name) async {
     Database db = await dbHelper.open();
     List<Map<String, dynamic>> results =
-        await db.rawQuery("SELECT * FROM recipe WHERE name LIDE ?", [name]);
+        await db.rawQuery("SELECT * FROM recipe WHERE name LIKE ?", [name]);
     List<Recipe> recipes = [];
     for (Map<String, dynamic> result in results) {
       recipes.add(_getRecipeFromRaw(result));
